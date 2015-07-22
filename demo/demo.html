@@ -4,7 +4,35 @@
     <meta charset="UTF-8">
     <title>Simple lazyLoading Demo</title>
 </head>
-<body>
+<script src="js/LazyLoading.js"></script>
+<style>
+    img
+    {
+        display: block;
+        width: 150px;
+        height: 150px;
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 2px;
+        border: solid 1px #eee;
+        transition: opacity 1s;
+        opacity: 0;
+    }
 
+    img[src]
+    {
+        opacity: 1;
+    }
+</style>
+<body>
+<script>
+    /* Images render */
+    for (var i = 97, imgh = '<img data-src=images/', imgt = '.png />'; i < 121; i++)
+    {
+        document.body.innerHTML += imgh + String.fromCharCode(i) + imgt;
+    }
+    /* Simply LazyLoading bind */
+    window.lazyController = new LazyLoading();
+</script>
 </body>
 </html>
