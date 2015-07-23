@@ -8,20 +8,14 @@ var LazyLoading = function (wrapper, autoDestroy)
         vh = wrapper.innerHeight || wrapper.clientHeight,
         sprop = typeof wrapper.scrollY === 'undefined' ? 'scrollTop' : 'scrollY';
 
-    this.resizing = function (e)
-    {
-        initValues(), proc();
-    };
-
     this.put = collection;
-    this.destroy = destroy;
 
     (function initialize()
     {
         console.log('[*] Lazy loading...');
-        collection((wrapper === window ? wrapper.document : wrapper).querySelectorAll('[data-src]'));
-        proc();
+        collection((wrapper === window ? wrapper.document : wrapper).querySelectorAll('[data-src]')), proc();
         wrapper.addEventListener('scroll', lazyScrollEvent);
+        wrapper.addEventListener('resize', lazyResizeEvent);
     })();
 
     function initValues()
@@ -57,6 +51,11 @@ var LazyLoading = function (wrapper, autoDestroy)
         }
     }
 
+    function lazyResizeEvent()
+    {
+        initValues(), proc();
+    };
+
     function proc(force)
     {
         for (var i = ptr, threshold = vh + wrapper[sprop], len = contents.length; i < len; i++)
@@ -83,6 +82,8 @@ var LazyLoading = function (wrapper, autoDestroy)
     function destroy()
     {
         wrapper.removeEventListener('scroll', lazyScrollEvent);
+        wrapper.removeEventListener('resize', lazyResizeEvent);
+
         proc(true);
         console.log('[*] Lazy loading cleared');
     }
